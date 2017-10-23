@@ -127,8 +127,8 @@ struct {
 } ;
 
 struct {
-	unsigned char n ;
-	unsigned char i[MAXSUCC] ;
+    unsigned char n ;
+    unsigned char i[MAXSUCC] ;
 } succtab[NTAB] = {
 {1,{5}},
 {1,{2}},
