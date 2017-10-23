@@ -20,6 +20,9 @@
 #define LOWOFFSET 1.703
 #define HIOFFSET 1.693
 
+#define NMIN 50000   // below NMIN, just get the Nth number by chugging
+                     // through the whole sequence
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -51,31 +54,54 @@ int main(int argc, char **argv) {
     }
     n = atol(argv[1]) ;
 
-	// get range of logM
-    logM = pow((6.0*l2*l3*l5)*n,THIRD) ;
-    logMlo = logM - LOWOFFSET ;
-    logMhi = logM - HIOFFSET ;
-
-    kmax = floor(logMhi/l5) ;
-    for (k = 0 ; k <= kmax ; k++) {
-        jmax = floor((logMhi - k*l5)/l3) ;
-        for (j = 0 ; j <= jmax ; j++) {
-            imin = ceil((logMlo - k*l5 - j*l3)/l2) ;
-            imax = floor((logMhi - k*l5 - j*l3)/l2) ;
-            totn += imin ;
-            for (i = imin ; i <= imax ; i++) {
-                logM = i*l2 + j*l3 + k*l5 ;
-                if (logM < logMmin) {
-                    logMmin = logM ;
-                    i0 = i ;
-                    j0 = j ;
-                    k0 = k ;
+    if (n >= NMIN) {
+        // get range of logM
+        logM = pow((6.0*l2*l3*l5)*n,THIRD) ;
+        logMlo = logM - LOWOFFSET ;
+        logMhi = logM - HIOFFSET ;
+    
+        kmax = floor(logMhi/l5) ;
+        for (k = 0 ; k <= kmax ; k++) {
+            jmax = floor((logMhi - k*l5)/l3) ;
+            for (j = 0 ; j <= jmax ; j++) {
+                imin = ceil((logMlo - k*l5 - j*l3)/l2) ;
+                imax = floor((logMhi - k*l5 - j*l3)/l2) ;
+                totn += imin ;
+                for (i = imin ; i <= imax ; i++) {
+                    logM = i*l2 + j*l3 + k*l5 ;
+                    if (logM < logMmin) {
+                        logMmin = logM ;
+                        i0 = i ;
+                        j0 = j ;
+                        k0 = k ;
+                    }
                 }
             }
         }
+        nahead = n - totn - 1 ;
+        hammahead(nahead,&i0,&j0,&k0) ;
     }
-    nahead = n - totn - 1 ;
-    hammahead(nahead,&i0,&j0,&k0) ;
+    else {
+		int m, in ;
+		i0 = 0 ;
+		j0 = 0 ;
+		k0 = 0 ;
+		for (in = 0 ; in < n-1 ; in++) {
+		    m = 0 ;
+		    found = FALSE ;
+		    while (!found && m < NTAB) {
+			    if (i0 + hamtab[m].p2 >= 0)
+			        if (j0 + hamtab[m].p3 >= 0)
+			            if (k0 + hamtab[m].p5 >= 0)
+						    found = TRUE ;
+			    m++ ;
+		    }
+			m-- ;
+			i0 += hamtab[m].p2 ;
+			j0 += hamtab[m].p3 ;
+			k0 += hamtab[m].p5 ;
+        }
+    }
     printf("%d %d %d\n",i0,j0,k0) ;  // output nth i,j,k values
 }
 
