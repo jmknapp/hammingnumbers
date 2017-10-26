@@ -7,7 +7,7 @@
 // 
 // Once the lower triple in the band is identified, and the offset
 // from that number to the nth number determined, the table in
-// hamtab3.h is used to generate iterates up to the nth number.
+// hamnum.h is used to generate iterates up to the nth number.
 //
 #define TRUE 1
 #define FALSE 0
@@ -82,24 +82,24 @@ int main(int argc, char **argv) {
         hammahead(nahead,&i0,&j0,&k0) ;
     }
     else {
-		int m, in ;
-		i0 = 0 ;
-		j0 = 0 ;
-		k0 = 0 ;
-		for (in = 0 ; in < n-1 ; in++) {
-		    m = 0 ;
-		    found = FALSE ;
-		    while (!found && m < NTAB) {
-			    if (i0 + hamtab[m].p2 >= 0)
-			        if (j0 + hamtab[m].p3 >= 0)
-			            if (k0 + hamtab[m].p5 >= 0)
-						    found = TRUE ;
-			    m++ ;
-		    }
-			m-- ;
-			i0 += hamtab[m].p2 ;
-			j0 += hamtab[m].p3 ;
-			k0 += hamtab[m].p5 ;
+        int m, in ;
+        i0 = 0 ;
+        j0 = 0 ;
+        k0 = 0 ;
+        for (in = 0 ; in < n-1 ; in++) {
+            m = 0 ;
+            found = FALSE ;
+            while (!found && m < NTAB) {
+                if (i0 + hamtab[m].p2 >= 0)
+                    if (j0 + hamtab[m].p3 >= 0)
+                        if (k0 + hamtab[m].p5 >= 0)
+                            found = TRUE ;
+                m++ ;
+            }
+            m-- ;
+            i0 += hamtab[m].p2 ;
+            j0 += hamtab[m].p3 ;
+            k0 += hamtab[m].p5 ;
         }
     }
     printf("%d %d %d\n",i0,j0,k0) ;  // output nth i,j,k values
