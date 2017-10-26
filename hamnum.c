@@ -7,7 +7,7 @@
 // 
 // Once the lower triple in the band is identified, and the offset
 // from that number to the nth number determined, the table in
-// hamtab3.h is used to generate iterates up to the nth number.
+// hamtab.h is used to generate iterates up to the nth number.
 //
 #define TRUE 1
 #define FALSE 0
