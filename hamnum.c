@@ -7,11 +7,7 @@
 // 
 // Once the lower triple in the band is identified, and the offset
 // from that number to the nth number determined, the table in
-<<<<<<< HEAD
 // hamnum.h is used to generate iterates up to the nth number.
-=======
-// hamtab.h is used to generate iterates up to the nth number.
->>>>>>> 33dda35580668c2b7f7acb7ec3bdb3abba99ce07
 //
 #define TRUE 1
 #define FALSE 0
